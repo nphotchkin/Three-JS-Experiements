@@ -8,6 +8,10 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
+  devServer: {
+    inline:true,
+    port: 4200
+  },
   module: {
     rules: [
       {
