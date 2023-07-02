@@ -5,14 +5,13 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "npx vite"
+        "start": "npx vite --port 4200"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "@types/three": "^0.152.1",
-        "three": "^0.154.0",
-        "three-addons": "^1.2.0"
+        "three": "^0.154.0"
     },
     "devDependencies": {
         "vite": "^4.3.9"
