@@ -23,12 +23,12 @@ var triangleLine = createTriangleFromLines();
 scene.add(triangleLine);
 
 var yLine = toLine(
-    [ new THREE.Vector3(0, 0, 0 ), new THREE.Vector3(0, 1000, 0 )],
+    [ new THREE.Vector3(0, -1000, 0 ), new THREE.Vector3(0, 1000, 0 )],
     new THREE.Color(0xff0000)
 );
 
 var xLine = toLine(
-    [ new THREE.Vector3(0, 0, 0 ), new THREE.Vector3(1000, 0, 0 )],
+    [ new THREE.Vector3(-1000, 0, 0 ), new THREE.Vector3(1000, 0, 0 )],
     new THREE.Color(0xff0000)
 );
 
