@@ -57,13 +57,11 @@ function resetGui() {
     settings = JSON.parse(JSON.stringify(origSettings))
     gui.destroy();
     initGui(settings);
-    console.log(settings)
 }
 
 init();
 
 function init() {
-
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -117,14 +115,12 @@ function init() {
 }
 
 function onWindowResize() {
-
     renderer.setSize( window.innerWidth, window.innerHeight );
     camera.aspect = ( window.innerWidth / window.innerHeight );
     camera.updateProjectionMatrix();
-
 }
 
-function animation( time ) {
+function animation() {
     meshKnot.rotation.y = settings.knotProperties.rotation;
 
     // not sure if this belongs in the animation loop?
