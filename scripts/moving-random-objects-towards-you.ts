@@ -76,6 +76,10 @@ class TorusKnotSpawner {
 
     destroyMeshesOutsideView() {
         this.meshes.forEach(mesh => {
+
+            var mat = mesh.material as THREE.MeshBasicMaterial;
+            mat.opacity -= 0.01;
+
             if (mesh.position.z < -15) {
 
                 scene.remove(mesh);
@@ -96,7 +100,12 @@ class TorusKnotSpawner {
     private spawnMeshAtPosition(position: THREE.Vector3) {
         const geoKnot = new THREE.TorusKnotGeometry( 1.4, 0.5, 360, 12);
         const matKnot = new THREE.MeshStandardMaterial( { color: 0xffffff, roughness: 0, metalness: 0 } );
+        matKnot.transparent = true;
+        matKnot.opacity = 1; // fully visible
         meshKnot = new THREE.Mesh(geoKnot, matKnot);
+
+        
+
         meshKnot.position.set(position.x, position.y, position.z);
         scene.add(meshKnot);
         this.meshes.push(meshKnot);
