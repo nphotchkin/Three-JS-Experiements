@@ -13,34 +13,52 @@ var camera: THREE.PerspectiveCamera;
 
 import * as dat from 'dat.gui';
 
-var knotProperties = {
-  rotation: 10,
-  x: 0,
-  y: 5,
-  z: 0
+
+var settings = {
+    knotProperties: {
+        rotation: 10,
+        x: 0,
+        y: 5,
+        z: 0
+    },
+    cameraProperties: {
+        x: 0,
+        y: 5,
+        z: -15
+    }  
 }
 
-var cameraProperties = {
-    x: 0,
-    y: 5,
-    z: -15
+const origSettings = JSON.parse(JSON.stringify(settings))
+
+var gui;
+
+initGui(settings);
+
+function initGui(settings) {
+
+    gui = new dat.GUI(
+        { name: 'ThreeJS Controller'});
+    var knotControlsFolder = gui.addFolder('Control Knot Geometry');
+
+    knotControlsFolder.add(settings.knotProperties, 'rotation', 1, 100, 0.1);
+    knotControlsFolder.add(settings.knotProperties, 'x', -10, 10, 0.01);
+    knotControlsFolder.add(settings.knotProperties, 'y', 0.95, 10, 0.01);
+    knotControlsFolder.add(settings.knotProperties, 'z', -10, 10, 0.01);
+    
+    var cameraControlsFolder = gui.addFolder('Control Camera');
+    cameraControlsFolder.add(settings.cameraProperties, 'x', -10, 10, 0.01);
+    cameraControlsFolder.add(settings.cameraProperties, 'y', -10, 10, 0.01);
+    cameraControlsFolder.add(settings.cameraProperties, 'z', -15, 10, 0.01);
+    
+    gui.add({ resetGui }, 'resetGui')
 }
 
-
-
-const gui = new dat.GUI({ name: 'ThreeJS Controller'});
-var knotControlsFolder = gui.addFolder('Control Knot Geometry');
-
-knotControlsFolder.add(knotProperties, 'rotation', 1, 100, 0.1);
-knotControlsFolder.add(knotProperties, 'x', -10, 10, 0.01);
-knotControlsFolder.add(knotProperties, 'y', -10, 10, 0.01);
-knotControlsFolder.add(knotProperties, 'z', -10, 10, 0.01);
-
-var cameraControlsFolder = gui.addFolder('Control Camera');
-cameraControlsFolder.add(cameraProperties, 'x', -10, 10, 0.01);
-cameraControlsFolder.add(cameraProperties, 'y', -10, 10, 0.01);
-cameraControlsFolder.add(cameraProperties, 'z', -15, 10, 0.01);
-
+function resetGui() {
+    settings = JSON.parse(JSON.stringify(origSettings))
+    gui.destroy();
+    initGui(settings);
+    console.log(settings)
+}
 
 init();
 
@@ -54,7 +72,7 @@ function init() {
     document.body.appendChild( renderer.domElement );
 
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-    camera.position.set( cameraProperties.x, cameraProperties.y, cameraProperties.z );
+    camera.position.set( settings.cameraProperties.x, settings.cameraProperties.y, settings.cameraProperties.z );
 
     scene = new THREE.Scene();
 
@@ -77,14 +95,14 @@ function init() {
     scene.add( new RectAreaLightHelper( rectLight3 ) );
 
     const geoFloor = new THREE.BoxGeometry( 2000, 0.1, 2000 );
-    const matStdFloor = new THREE.MeshStandardMaterial( { color: 0xbcbcbc, roughness: 0.6, metalness: 0 } );
+    const matStdFloor = new THREE.MeshStandardMaterial( { color: 0xbcbcbc, roughness: 0.7, metalness: 0 } );
     const mshStdFloor = new THREE.Mesh( geoFloor, matStdFloor );
     scene.add( mshStdFloor );
 
     const geoKnot = new THREE.TorusKnotGeometry( 1.5, 0.5, 200, 16 );
     const matKnot = new THREE.MeshStandardMaterial( { color: 0xffffff, roughness: 0, metalness: 0 } );
     meshKnot = new THREE.Mesh( geoKnot, matKnot );
-    meshKnot.position.set( knotProperties.x, knotProperties.y, knotProperties.z );
+    meshKnot.position.set( settings.knotProperties.x, settings.knotProperties.y, settings.knotProperties.z );
     scene.add( meshKnot );
 
     const controls = new OrbitControls( camera, renderer.domElement );
@@ -107,14 +125,12 @@ function onWindowResize() {
 }
 
 function animation( time ) {
+    meshKnot.rotation.y = settings.knotProperties.rotation;
 
-    meshKnot.rotation.y = knotProperties.rotation;
-    meshKnot.position.set( knotProperties.x, knotProperties.y, knotProperties.z );
-
-    camera.position.set( cameraProperties.x, cameraProperties.y, cameraProperties.z );
+    // not sure if this belongs in the animation loop?
+    meshKnot.position.set( settings.knotProperties.x, settings.knotProperties.y, settings.knotProperties.z );
+    camera.position.set( settings.cameraProperties.x, settings.cameraProperties.y, settings.cameraProperties.z );
 
     renderer.render( scene, camera );
-
     stats.update();
-
 }
