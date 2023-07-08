@@ -165,7 +165,7 @@ var quadraticPaths = [
 
 
 
-var yukaPaths = VectorMapper.toYukaVector(quadraticPaths, 5);
+var yukaPaths = VectorMapper.toYukaVector(quadraticPaths, 0);
 
 console.log(yukaPaths)
 var pathingAgent = new PathFollowingAgent({
